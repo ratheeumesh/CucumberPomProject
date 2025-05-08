@@ -1,0 +1,169 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <!-- help >>> Install new software and add below site.-->
+  <!-- Conver to cucumber project using https://cucumber.github.io/cucumber-eclipse-update-site/-->
+  <groupId>CucumberPOMSeries</groupId>
+  <artifactId>CucumberPOMSeries</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>CucumberPOMSeries</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<junit.version>4.13.2</junit.version>
+		<cucumber.version>6.9.0</cucumber.version>
+		<maven.compiler.version>3.8.1</maven.compiler.version>
+		<!-- Specifies the version of the Maven Surefire Plugin used to run unit tests during the build -->
+		<maven.surefire.version>2.22.2</maven.surefire.version>
+  </properties>
+
+  <dependencies>
+    
+		<!-- Enables step definition support for Cucumber with Java -->
+		<dependency>
+		    <groupId>io.cucumber</groupId>
+		    <artifactId>cucumber-java</artifactId>
+		    <version>${cucumber.version}</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<!-- Integrates Cucumber with JUnit for running BDD tests -->
+		<dependency>
+		    <groupId>io.cucumber</groupId>
+		    <artifactId>cucumber-junit</artifactId>
+		    <version>${cucumber.version}</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<!-- Provides JUnit testing framework for unit and integration tests -->
+		<dependency>
+		    <groupId>junit</groupId>
+		    <artifactId>junit</artifactId>
+		    <version>${junit.version}</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<!-- Enables browser automation for web testing using Selenium WebDriver -->
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-java</artifactId>
+		    <version>3.141.59</version>
+		</dependency>
+		
+		<!-- Automatically manages WebDriver binaries for different browsers -->
+		<dependency>
+		    <groupId>io.github.bonigarcia</groupId>
+		    <artifactId>webdrivermanager</artifactId>
+		    <version>5.6.3</version> <!-- Use latest available -->
+		</dependency>
+		
+		<!-- Generates detailed ExtentReports from Cucumber 6 test executions -->
+		<dependency>
+		    <groupId>tech.grasshopper</groupId>
+		    <artifactId>extentreports-cucumber6-adapter</artifactId>
+		    <version>2.8.0</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<!-- Provides TestNG testing framework support for advanced test configuration -->
+		<dependency>
+		    <groupId>org.testng</groupId>
+		    <artifactId>testng</artifactId>
+		    <version>6.14.3</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<!-- Integrates Cucumber with TestNG for executing BDD tests using TestNG -->
+		<dependency>
+		    <groupId>io.cucumber</groupId>
+		    <artifactId>cucumber-testng</artifactId>
+		    <version>${cucumber.version}</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<!-- Allows reading and writing older Excel (.xls) files using Apache POI -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>4.1.2</version>
+		</dependency>
+		
+		<!-- Enables support for modern Excel (.xlsx) files with Apache POI -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>4.1.2</version>
+		</dependency>
+    
+  </dependencies>
+  
+  <build>
+  
+  	<plugins>
+  	
+  	<!-- Compiles Java source code with the specified encoding, source, and target Java versions -->
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.version}</version>
+        <configuration>
+            <encoding>UTF-8</encoding> <!-- Sets file encoding for source files -->
+            <source>${java.version}</source> <!-- Specifies Java source version -->
+            <target>${java.version}</target> <!-- Specifies Java target (bytecode) version -->
+    
+        </configuration>
+    </plugin>
+
+    <!-- Runs unit tests during the Maven test phase using the Surefire plugin -->
+    
+
+    <!-- 
+    Optional: Failsafe plugin runs integration tests separately after the test phase 
+    Uncomment and configure if you need to separate integration tests from unit tests 
+    -->
+	<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-failsafe-plugin</artifactId>
+			    <version>3.0.0-M3</version>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>integration-test</goal>
+			                <goal>verify</goal>
+			            </goals>
+			            <configuration>
+			              <!--UNCOMMENT - To add any exclusions if required-->   
+			              <!--  <excludes>
+			                    <exclude>**/*IT*.java</exclude>
+			                </excludes> -->
+			
+			                <includes>
+			                  <!--UNCOMMENT BELOW LINE - To execute feature files with a single runner-->  
+			                    <include>**/MyTestRunner.java</include>
+			                    
+			                   <!-- UNCOMMENT BELOW LINE - To execute feature files with multiple runners -->
+			                    <!-- <include>**/*Runner.java</include> -->
+			                </includes>
+			
+			                <!-- UNCOMMENT BELOW 3 LINES - To execute using parallel or combination option -->
+			                <parallel>methods</parallel>
+			                <threadCount>4</threadCount>
+			                <perCoreThreadCount>true</perCoreThreadCount>
+			
+			                <!-- UNCOMMENT BELOW 3 LINES - To execute using forking or combination option -->
+			                <!-- <forkCount>2</forkCount>
+			                <reuseForks>true</reuseForks>
+			                <reportsDirectory>${project.build.directory}/failsafe-reports_${surefire.forkNumber}</reportsDirectory>  -->
+			            </configuration>
+			        </execution>
+			    </executions>
+	</plugin>
+
+  	</plugins>
+  
+  </build>
+</project>
